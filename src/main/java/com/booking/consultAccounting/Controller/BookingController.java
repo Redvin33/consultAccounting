@@ -34,7 +34,7 @@ public class BookingController {
         if (project == null) {
             throw new NoSuchRequestHandlingMethodException("show", Project.class);
 
-        }else {
+        } else {
             return bookingService.getProjectById(id);
         }
     }
