@@ -1,16 +1,7 @@
 package com.booking.consultAccounting.entity;
 
 
-
-import org.hibernate.annotations.Entity;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hibernate.type.EnumType;
 
 /**
  * Created by Lauri on 18.10.2017.
