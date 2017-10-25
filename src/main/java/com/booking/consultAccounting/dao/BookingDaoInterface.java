@@ -1,7 +1,6 @@
-package com.booking.consultAccounting.Dao;
+package com.booking.consultAccounting.dao;
 
-import com.booking.consultAccounting.Entity.Entry;
-import com.booking.consultAccounting.Entity.Project;
+import com.booking.consultAccounting.entity.Project;
 
 import java.util.Collection;
 

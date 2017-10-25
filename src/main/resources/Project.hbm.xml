@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name = "com.booking.consultAccounting.Entity.Project" table = "projects">
+    <class name = "com.booking.consultAccounting.entity.Project" table = "projects">
 
         <meta attribute = "class-description">
             Class contains details about every project

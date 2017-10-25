@@ -1,9 +1,8 @@
 package com.booking.consultAccounting;
 
-import com.booking.consultAccounting.DB.DBInit;
+import com.booking.consultAccounting.db.DBInit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @SpringBootApplication
 public class ConsultAccountingApplication {

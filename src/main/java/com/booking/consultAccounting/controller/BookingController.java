@@ -1,14 +1,13 @@
-package com.booking.consultAccounting.Controller;
+package com.booking.consultAccounting.controller;
 
-import com.booking.consultAccounting.Entity.Project;
-import com.booking.consultAccounting.Service.BookingService;
+import com.booking.consultAccounting.entity.Project;
+import com.booking.consultAccounting.service.BookingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
-import javax.validation.constraints.Null;
 import java.util.Collection;
 
 /**

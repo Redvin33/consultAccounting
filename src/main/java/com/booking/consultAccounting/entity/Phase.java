@@ -1,4 +1,4 @@
-package com.booking.consultAccounting.Entity;
+package com.booking.consultAccounting.entity;
 
 import java.io.Serializable;
 

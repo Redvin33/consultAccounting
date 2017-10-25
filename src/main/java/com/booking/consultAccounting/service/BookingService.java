@@ -1,10 +1,7 @@
-package com.booking.consultAccounting.Service;
+package com.booking.consultAccounting.service;
 
-import com.booking.consultAccounting.Dao.BookingDaoImpl;
-import com.booking.consultAccounting.Dao.BookingDaoInterface;
-import com.booking.consultAccounting.Entity.Entry;
-import com.booking.consultAccounting.Entity.Project;
-import com.sun.prism.impl.Disposer;
+import com.booking.consultAccounting.dao.BookingDaoInterface;
+import com.booking.consultAccounting.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

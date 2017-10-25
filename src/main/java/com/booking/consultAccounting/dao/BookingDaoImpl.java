@@ -1,21 +1,15 @@
-package com.booking.consultAccounting.Dao;
+package com.booking.consultAccounting.dao;
 
-import com.booking.consultAccounting.Entity.Phase;
-import com.booking.consultAccounting.Entity.Project;
-import com.fasterxml.classmate.AnnotationConfiguration;
+import com.booking.consultAccounting.entity.Project;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import javax.persistence.TypedQuery;
-import javax.validation.constraints.Null;
 import java.util.*;
 
 /**
@@ -34,7 +28,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     @Override
     public List<Project> getAllProjects() {
         Session session = sessionFactory.openSession();
-        Query qry = session.createQuery("from com.booking.consultAccounting.Entity.Project");
+        Query qry = session.createQuery("from com.booking.consultAccounting.entity.Project");
         return qry.list();
 
 
@@ -71,8 +65,6 @@ public class BookingDaoImpl implements BookingDaoInterface {
     public void addProject(Project project) {
         Session session = sessionFactory.openSession();
         session.save(project);
-
-
     }
 
 }

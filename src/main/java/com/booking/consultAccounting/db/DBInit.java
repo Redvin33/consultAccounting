@@ -1,4 +1,4 @@
-package com.booking.consultAccounting.DB;
+package com.booking.consultAccounting.db;
 
 import org.postgresql.util.PSQLException;
 

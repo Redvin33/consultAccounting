@@ -1,15 +1,11 @@
-package com.booking.consultAccounting.Entity;
+package com.booking.consultAccounting.entity;
 
 
 
-import org.hibernate.annotations.*;
-
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
