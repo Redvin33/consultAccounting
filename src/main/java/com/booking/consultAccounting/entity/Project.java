@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hibernate.type.EnumType;
 
 /**
@@ -14,9 +17,7 @@ import org.hibernate.type.EnumType;
  */
 //@Entity
 public class Project implements Serializable {
-    //@Autowired
-    //@GeneratedValue(strategy = GenerationType.AUTO)
-    //@Column(name="id")
+
     private int id;
     //@Column(name="name")
     private String name;
@@ -100,7 +101,7 @@ public class Project implements Serializable {
         return phase.toString();
     }
     //Using string since
-    public void setPhase(String phase) throws Exception{
+    public void setPhase(String phase) throws Exception {
         this.phase = Phase.valueOf(phase);
     }
 
@@ -111,4 +112,6 @@ public class Project implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+
 }

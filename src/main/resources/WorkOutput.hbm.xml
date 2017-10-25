@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name = "com.booking.consultAccounting.entity.WorkOutput" table = "workoutputs">
+
+        <meta attribute = "class-description">
+            Class contains details about work output
+        </meta>
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <property name = "pvm" column = "pvm" type = "java.util.Date" />
+        <property name = "hours" column = "hours" type = "double"/>
+        <many-to-one name="project" class="com.booking.consultAccounting.entity.Project" column="project_id" fetch ="join" unique="true" not-null="true" lazy="false" cascade="all"/>
+        <property name = "paid" column="paid" type="string"/>
+        <property name = "description" column = "description" type = "string"/>
+
+    </class>
+
+</hibernate-mapping>

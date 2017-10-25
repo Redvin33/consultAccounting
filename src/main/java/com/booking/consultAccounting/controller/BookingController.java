@@ -40,19 +40,19 @@ public class BookingController {
 
     //with DELETE request to http://domain/entrys/{id} deletes entry that matches id
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-    public void deleteentryById(@PathVariable("id") int id) {
+    public void deleteProjectById(@PathVariable("id") int id) {
         bookingService.deleteProjectById(id);
     }
 
     //with PUT request with JSON content to http://domain/entrys edits existing entry in entryData
-    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateProject(@RequestBody Project project) {
         bookingService.updateProject(project);
     }
 
     //with POSY
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void insertentry(@RequestBody Project project) {
+    public void addProject(@RequestBody Project project) {
         bookingService.addProject(project);
     }
 }

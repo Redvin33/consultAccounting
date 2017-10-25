@@ -28,8 +28,11 @@ public class BookingDaoImpl implements BookingDaoInterface {
     @Override
     public List<Project> getAllProjects() {
         Session session = sessionFactory.openSession();
-        Query qry = session.createQuery("from com.booking.consultAccounting.entity.Project");
-        return qry.list();
+        Query qry = session.createQuery("from Project");
+        List projects = qry.list();
+        session.close();
+        return projects;
+
     }
 
     @Override
