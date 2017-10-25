@@ -30,41 +30,42 @@ public class BookingDaoImpl implements BookingDaoInterface {
         Session session = sessionFactory.openSession();
         Query qry = session.createQuery("from com.booking.consultAccounting.entity.Project");
         return qry.list();
-
-
     }
 
     @Override
     public Project getProjectById(int id) {
-        return new Project();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Project p = session.get(Project.class, id);
+        session.close();
+        return p;
     }
 
     @Override
     public void deleteProjectById(int id) {
-
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Project p = session.get(Project.class, id);
+        session.delete(p);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public void updateProject(Project p) {
-        /*Project p2 = projects.get(p.getId());
-        p2.setActive(p.isActive());
-        p2.setCharged(p.getCharged());
-        p2.setCustomer(p.getCustomer());
-        p2.setHourly_rate(p.getHourly_rate());
-        p2.setPhase(p.getPhase());
-        p2.setName(p.getName());
-        projects.put(p.getId(), p2);
-        */
-
-    }
-    public void save(Project p) {
-
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(p);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public void addProject(Project project) {
         Session session = sessionFactory.openSession();
+        session.beginTransaction();
         session.save(project);
+        session.getTransaction().commit();
+        session.close();
     }
-
 }

@@ -7,30 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import org.hibernate.type.EnumType;
 
 /**
  * Created by Lauri on 18.10.2017.
  */
-@Entity
+//@Entity
 public class Project implements Serializable {
-    @Autowired
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    //@Autowired
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    //@Column(name="id")
     private int id;
-    @Column(name="name")
+    //@Column(name="name")
     private String name;
-    @Column(name="customer")
+    //@Column(name="customer")
     private String customer;
-    @Column(name="hourly_rate")
+    //@Column(name="hourly_rate")
     private double hourly_rate;
-    @Column(name="charged")
+    //@Column(name="charged")
     private double charged;
-    @Column(name="to_charge")
+    //@Column(name="to_charge")
     private double to_charge;
-    @Column(name="phase")
-    @Enumerated(EnumType.STRING)
+    //@Column(name="phase")
+    //@Enumerated(EnumType.STRING)
     private Phase phase;
-    @Column(name="active")
+    //@Column(name="active")
     private boolean active;
 
     private static final long serialVersionUID = 1L;
@@ -95,12 +96,12 @@ public class Project implements Serializable {
         this.to_charge = to_charge;
     }
 
-    public Phase getPhase() {
-        return phase;
+    public String getPhase() {
+        return phase.toString();
     }
-
-    public void setPhase(Phase phase) {
-        this.phase = phase;
+    //Using string since
+    public void setPhase(String phase) throws Exception{
+        this.phase = Phase.valueOf(phase);
     }
 
     public boolean isActive() {
