@@ -2,12 +2,21 @@ package com.booking.consultAccounting.Dao;
 
 import com.booking.consultAccounting.Entity.Phase;
 import com.booking.consultAccounting.Entity.Project;
+import com.fasterxml.classmate.AnnotationConfiguration;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import javax.persistence.TypedQuery;
+import javax.validation.constraints.Null;
+import java.util.*;
 
 /**
  * Created by Lauri on 18.10.2017.
@@ -15,33 +24,35 @@ import java.util.Map;
 @Repository
 @Qualifier("testData")
 public class BookingDaoImpl implements BookingDaoInterface {
-    private static Map<Integer, Project> projects;
-    static {
-        projects = new HashMap<Integer, Project>() {
-            {
-                put(1, new Project("sillanrakennus", "SITO", 65, 1200, 1500, Phase.urakointi, true));
-            }
-        };
+    private SessionFactory sessionFactory;
+
+    public BookingDaoImpl() {
+        this.sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
+    @Transactional
     @Override
-    public Collection<Project> getAllProjects() {
-        return this.projects.values();
+    public List<Project> getAllProjects() {
+        Session session = sessionFactory.openSession();
+        Query qry = session.createQuery("from com.booking.consultAccounting.Entity.Project");
+        return qry.list();
+
+
     }
 
     @Override
     public Project getProjectById(int id) {
-        return this.projects.get(id);
+        return new Project();
     }
 
     @Override
     public void deleteProjectById(int id) {
-        this.projects.remove(id);
+
     }
 
     @Override
     public void updateProject(Project p) {
-        Project p2 = projects.get(p.getId());
+        /*Project p2 = projects.get(p.getId());
         p2.setActive(p.isActive());
         p2.setCharged(p.getCharged());
         p2.setCustomer(p.getCustomer());
@@ -49,11 +60,19 @@ public class BookingDaoImpl implements BookingDaoInterface {
         p2.setPhase(p.getPhase());
         p2.setName(p.getName());
         projects.put(p.getId(), p2);
+        */
+
+    }
+    public void save(Project p) {
 
     }
 
     @Override
     public void addProject(Project project) {
+        Session session = sessionFactory.openSession();
+        session.save(project);
+
 
     }
+
 }

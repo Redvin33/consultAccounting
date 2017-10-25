@@ -23,7 +23,7 @@ public class BookingController {
 
     //Returns all entrys
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<Project> getAllentrys(){
+    public Collection<Project> getAllProjects(){
         return bookingService.getAllProjects();
     }
 

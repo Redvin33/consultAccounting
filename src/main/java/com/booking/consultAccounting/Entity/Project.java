@@ -1,21 +1,45 @@
 package com.booking.consultAccounting.Entity;
 
+
+
+import org.hibernate.annotations.*;
+
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Entity;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import javax.persistence.Table;
+import java.io.Serializable;
+
 /**
  * Created by Lauri on 18.10.2017.
  */
-public class Project {
+@Entity
+public class Project implements Serializable {
+    @Autowired
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private int id;
+    @Column(name="name")
     private String name;
+    @Column(name="customer")
     private String customer;
-    private float hourly_rate;
-    private float charged;
-    private float to_charge;
+    @Column(name="hourly_rate")
+    private double hourly_rate;
+    @Column(name="charged")
+    private double charged;
+    @Column(name="to_charge")
+    private double to_charge;
+    @Column(name="phase")
+    @Enumerated(EnumType.STRING)
     private Phase phase;
+    @Column(name="active")
     private boolean active;
-    private static int project_id=1;
+
+    private static final long serialVersionUID = 1L;
 
     public Project(String name, String customer, float hourly_rate, float charged, float to_charge, Phase phase, boolean active) {
-        this.id = project_id;
         this.name = name;
         this.customer = customer;
         this.hourly_rate = hourly_rate;
@@ -23,13 +47,12 @@ public class Project {
         this.to_charge = to_charge;
         this.phase = phase;
         this.active = active;
-        incProject_id();
     }
 
     public Project(){}
 
-    private static void incProject_id() {
-        project_id ++;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -52,27 +75,27 @@ public class Project {
         this.customer = customer;
     }
 
-    public float getHourly_rate() {
+    public double getHourly_rate() {
         return hourly_rate;
     }
 
-    public void setHourly_rate(float hourly_rate) {
+    public void setHourly_rate(double hourly_rate) {
         this.hourly_rate = hourly_rate;
     }
 
-    public float getCharged() {
+    public double getCharged() {
         return charged;
     }
 
-    public void setCharged(float charged) {
+    public void setCharged(double charged) {
         this.charged = charged;
     }
 
-    public float getTo_charge() {
+    public double getTo_charge() {
         return to_charge;
     }
 
-    public void setTo_charge(float to_charge) {
+    public void setTo_charge(double to_charge) {
         this.to_charge = to_charge;
     }
 

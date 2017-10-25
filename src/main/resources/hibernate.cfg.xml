@@ -1,0 +1,37 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name = "hibernate.dialect">
+            org.hibernate.dialect.PostgresPlusDialect
+        </property>
+
+        <property name="hibernate.hbm2ddl.auto">
+            update
+        </property>
+
+        <property name = "hibernate.connection.driver_class">
+            org.postgresql.Driver
+        </property>
+
+        <property name = "hibernate.connection.url">
+            jdbc:postgresql://localhost:5432/consultaccounting
+        </property>
+
+        <property name = "hibernate.connection.username">
+            postgres
+        </property>
+
+        <property name = "hibernate.connection.password">
+            olo8feimi
+        </property>
+
+        <property name="hibernate.hbm2ddl.import_files">schema.sql</property>
+
+
+        <mapping resource = "Project.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>

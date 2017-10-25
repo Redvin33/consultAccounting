@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "com.booking.consultAccounting.Entity.Project" table = "projects">
+
+        <meta attribute = "class-description">
+            Class contains details about every project
+        </meta>
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="native"/>
+        </id>
+
+        <property name = "name" column = "name" type = "string"/>
+        <property name = "customer" column = "customer" type = "string"/>
+        <property name = "hourly_rate" column = "hourly_rate" type = "double"/>
+        <property name = "charged" column = "charged" type = "double"/>
+        <property name = "to_charge" column = "to_charge" type = "double"/>
+        <property name = "phase" column = "phase" type = "string"/>
+        <property name = "active" column = "active" type = "boolean"/>
+
+    </class>
+</hibernate-mapping>

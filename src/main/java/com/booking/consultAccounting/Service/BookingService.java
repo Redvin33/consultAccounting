@@ -1,5 +1,6 @@
 package com.booking.consultAccounting.Service;
 
+import com.booking.consultAccounting.Dao.BookingDaoImpl;
 import com.booking.consultAccounting.Dao.BookingDaoInterface;
 import com.booking.consultAccounting.Entity.Entry;
 import com.booking.consultAccounting.Entity.Project;
@@ -18,6 +19,7 @@ public class BookingService {
     @Autowired
     @Qualifier("testData")
     private BookingDaoInterface bookingDao;
+
 
     public Collection<Project> getAllProjects() {
         return this.bookingDao.getAllProjects();
