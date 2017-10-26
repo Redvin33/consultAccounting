@@ -3,10 +3,15 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
+
     <session-factory>
 
         <property name = "hibernate.dialect">
             org.hibernate.dialect.PostgresPlusDialect
+        </property>
+
+        <property name="hibernate.hbm2ddl.auto">
+            create
         </property>
 
         <property name="hibernate.show_sql">
@@ -17,8 +22,21 @@
             org.postgresql.Driver
         </property>
 
+        <property name = "hibernate.connection.url">
+            jdbc:postgresql://localhost:5432/consultaccounting
+        </property>
+
+        <property name = "hibernate.connection.username">
+            root
+        </property>
+
+        <property name = "hibernate.connection.password">
+            root
+        </property>
+
         <mapping resource = "Project.hbm.xml"/>
         <mapping resource = "WorkOutput.hbm.xml"/>
+
 
     </session-factory>
 </hibernate-configuration>

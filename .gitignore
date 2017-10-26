@@ -22,3 +22,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/hibernate.cfg.xml
+/hibernate.properties
+/src/main/resources/hibernate.cfg.xml

@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ConsultAccountingApplication {
 
 	public static void main(String[] args) {
-		DBInit.createDatabase();
+		DBInit.createDatabase(); //Creates PostgreSQL database if it doesn't exist
 		SpringApplication.run(ConsultAccountingApplication.class, args);
 	}
 }

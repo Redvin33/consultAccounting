@@ -25,7 +25,7 @@ public class ConsultAccountingApplicationTests {
 	@Test
 	public void allProjectsTest() { //Makes GET-request to URL/projects and checks that it returns 200
 		try {
-			URL url = new URL("http://localhost:2015/projects");
+			URL url = new URL("http://localhost:8080/projects");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.connect();
@@ -40,7 +40,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Makes GET-request to domain/projects/{projectid that doesnt exist} and checks that it returns 404
 	public void nonExistingProject() {
 		try {
-			URL url = new URL("http://localhost:2015/projects/999999");
+			URL url = new URL("http://localhost:8080/projects/999999");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			assertEquals(404,con.getResponseCode());
 
@@ -53,7 +53,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Makes GET-request to domain/projects/{some string} and checks that it returns 400.
 	public void badRequestToProjects() {
 		try {
-			URL url = new URL("http://localhost:2015/projects/string");
+			URL url = new URL("http://localhost:8080/projects/string");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			assertEquals(400,con.getResponseCode());
 
@@ -66,7 +66,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Tries to create project by making POST request to domain/projects and adding correctly formulated JSON
 	public void createProject() {
 		try {
-			URL url = new URL("http://localhost:2015/projects");
+			URL url = new URL("http://localhost:8080/projects");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
@@ -99,7 +99,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Tries to create project by making POST request to domain/projects and adding JSON that misses name attribute
 	public void createProjectBadRequest() {
 		try {
-			URL url = new URL("http://localhost:2015/projects");
+			URL url = new URL("http://localhost:8080/projects");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
@@ -135,7 +135,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Makes GET-request to domain/workoutputs and checks that it always returns http status code 200
 	public void allWorkOutputsTest() {
 		try {
-			URL url = new URL("http://localhost:2015/workoutputs");
+			URL url = new URL("http://localhost:8080/projects/1/workoutputs");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			assertEquals(200, con.getResponseCode());
@@ -149,7 +149,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Makes GET-request to domain/workoutputs/9999999999999 and checks that it returns http status code 404
 	public void nonExistingProjectWorkOutputs() {
 		try {
-			URL url = new URL("http://localhost:2015/workoutputs/9999999999999");
+			URL url = new URL("http://localhost:8080/projects//workoutputs");
 
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			int expected = 404;
@@ -164,7 +164,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Makes POST-request to domain/workoutputs with JSON-body that has all attributes that WorkOutput class constructor needs
 	public void addWorkOutput() {
 		try {
-			URL url = new URL("http://localhost:2015/workoutputs");
+			URL url = new URL("http://localhost:8080/projects/add");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
@@ -195,7 +195,7 @@ public class ConsultAccountingApplicationTests {
 	@Test //Makes GET-request to domain/projects/{some string} and checks that it returns 400.
 	public void badRequestToWorkOutputs() {
 		try {
-			URL url = new URL("http://localhost:2015/workoutputs/string");
+			URL url = new URL("http://localhost:8080/workoutputs/string");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			assertEquals(400,con.getResponseCode());
 

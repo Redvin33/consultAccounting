@@ -15,7 +15,7 @@
             <generator class="native"/>
         </id>
 
-        <property name = "name" column = "name" type = "string" />
+        <property name = "name" column = "name" type = "string" unique="true"/>
         <property name = "customer" column = "customer" type = "string"/>
         <property name = "hourly_rate" column = "hourly_rate" type = "double"/>
         <property name = "charged" column = "charged" type = "double"/>

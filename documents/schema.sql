@@ -1,4 +1,3 @@
-/*CREATE TYPE phase_enum AS ENUM('urakointi', 'tarjous', 'aloittamaton');
 CREATE TABLE IF NOT EXISTS projects(
 	id SERIAl unique,
 	name varchar,
@@ -8,11 +7,12 @@ CREATE TABLE IF NOT EXISTS projects(
 	to_charge float,
 	phase phase_enum,
 	active boolean,
-	primary key(id)
+	primary key(id),
+	unique(name)
 );
 CREATE TABLE IF NOT EXISTS work_output(
 	id SERIAL unique,
-	date_ date,
+	pvm date,
 	hours float,
 	project int,
 	paid phase_enum,
@@ -29,4 +29,4 @@ CREATE TABLE IF NOT EXISTS driving_journal(
 	readout_departure int,
 	readout_return int,
 	foreign key(project) references Projects(id)
-); */
+);
