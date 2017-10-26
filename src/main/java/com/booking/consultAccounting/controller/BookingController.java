@@ -26,7 +26,7 @@ public class BookingController {
         return bookingService.getAllProjects();
     }
 
-    //with GET request to http://domain/entrys/{id} returns entry that matches id.
+    //with GET request to http://domain/projects/{id} returns entry that matches id.
     @RequestMapping(value= "/{id}", method = RequestMethod.GET)
     public Project getProjectById(@PathVariable("id") int id) throws Exception{
         Project project = bookingService.getProjectById(id);
@@ -38,19 +38,19 @@ public class BookingController {
         }
     }
 
-    //with DELETE request to http://domain/entrys/{id} deletes entry that matches id
+    //with DELETE request to http://domain/projects/{id} deletes entry that matches id
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     public void deleteProjectById(@PathVariable("id") int id) {
         bookingService.deleteProjectById(id);
     }
 
-    //with PUT request with JSON content to http://domain/entrys edits existing entry in entryData
+    //with PUT request with JSON content to http://domain/projects edits existing entry in entryData
     @RequestMapping(value="/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateProject(@RequestBody Project project) {
         bookingService.updateProject(project);
     }
 
-    //with POSY
+    //with POSt
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addProject(@RequestBody Project project) {
         bookingService.addProject(project);
