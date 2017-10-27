@@ -37,6 +37,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
 
     }
 
+
     @Transactional
     @Override
     public List<Project> getAllProjects() {
@@ -50,27 +51,32 @@ public class BookingDaoImpl implements BookingDaoInterface {
 
     @Override
     public Project getProjectById(int id) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        Project p = session.load(Project.class, id);
+        Project p = session.get(Project.class, id);
         session.close();
         return p;
     }
 
     @Override
-    public Project getProjectByName(String name) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Project p = session.load(Project.class, name);
-        session.close();
-        return p;
+    public Project getProjectByName(String name) throws IndexOutOfBoundsException{
+        try {
+            Session session = sessionFactory.openSession();
+            Query qry = session.createQuery("from Project where name='" + name + "'");
+            qry.setMaxResults(1);
+            Project p = (Project) qry.list().get(0);
+            session.close();
+            return p;
+        } catch (IndexOutOfBoundsException e) {
+            throw e;
+        }
     }
 
     @Override
     public void deleteProjectById(int id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Project p = session.load(Project.class, id);
+        Project p = session.get(Project.class, id);
         session.delete(p);
         session.getTransaction().commit();
         session.close();
@@ -98,7 +104,8 @@ public class BookingDaoImpl implements BookingDaoInterface {
     public void deleteWorkOutById(int id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.delete(session.load(WorkOutput.class, id));
+        WorkOutput w = session.load(WorkOutput.class, id);
+        session.delete(w);
         session.getTransaction().commit();
         session.close();
     }

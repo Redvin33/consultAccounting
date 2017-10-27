@@ -1,6 +1,9 @@
 package com.booking.consultAccounting.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -8,19 +11,20 @@ import java.util.Date;
  */
 public class WorkOutput implements Serializable{
     private int id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") //Without this GET-request returns date as milliseconds
     private Date pvm;
     private double hours;
-    private Project project;
+    private int project_id;
     private Phase paid;
     private String description;
 
     private static final long serialVersionUID = 13L;
 
-    public WorkOutput(Date pvm, float hours, Project project, Phase maksettu, String description) {
+    public WorkOutput(Date pvm, float hours, int project, Phase paid, String description) {
         this.pvm = pvm;
         this.hours = hours;
-        this.project = project;
-        this.paid = maksettu;
+        this.project_id = project;
+        this.paid = paid;
         this.description = description;
     }
 
@@ -35,7 +39,7 @@ public class WorkOutput implements Serializable{
     }
 
     public Date getPvm() {
-        return pvm;
+        return this.pvm;
     }
 
     public void setPvm(Date pvm) {
@@ -50,12 +54,12 @@ public class WorkOutput implements Serializable{
         this.hours = hours;
     }
 
-    public Project getProject() {
-        return project;
+    public int getProject_id() {
+        return project_id;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProject_id(int project_id) {
+        this.project_id = project_id;
     }
 
     public String getPaid() {

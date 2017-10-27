@@ -30,6 +30,14 @@ public class BookingService {
         return this.bookingDao.getProjectById(i);
     }
 
+    public Project getProjectByName(String name) throws IndexOutOfBoundsException{
+        try {
+            return this.bookingDao.getProjectByName(name);
+        } catch (IndexOutOfBoundsException e) {
+            throw e;
+        }
+    }
+
     public void updateProject(Project project) {
         this.bookingDao.updateProject(project);
     }
@@ -44,10 +52,6 @@ public class BookingService {
 
     public List<WorkOutput> getAllWorkOutputs(int id) {
         return this.bookingDao.getAllWorkOutputs(id);
-    }
-
-    public Project getProjectByName(String name) {
-        return this.bookingDao.getProjectByName(name);
     }
 
     public void deleteWorkOutputById(int id) {

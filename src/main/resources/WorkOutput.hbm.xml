@@ -17,7 +17,7 @@
 
         <property name = "pvm" column = "pvm" type = "java.util.Date" />
         <property name = "hours" column = "hours" type = "double"/>
-        <many-to-one name="project" class="com.booking.consultAccounting.entity.Project" column="project_id" fetch ="join" unique="true" not-null="true" lazy="false" cascade="all"/>
+        <property name = "project_id" column="project_id"  lazy="false" type = "int"/>
         <property name = "paid" column="paid" type="string"/>
         <property name = "description" column = "description" type = "string"/>
 

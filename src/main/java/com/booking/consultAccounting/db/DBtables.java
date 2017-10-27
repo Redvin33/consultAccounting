@@ -12,9 +12,8 @@ public class DBtables {
     public static void createTables(String url, String name, String pass) {
         try {
             Connection connection = DriverManager.getConnection(url, name, pass);
-            String sql = "";
             Statement statement = connection.createStatement();
-            sql = "CREATE TABLE projects(" +
+            String sql = "CREATE TABLE projects(" +
                     "id SERIAl unique," +
                     "name varchar," +
                     "customer varchar," +
@@ -32,11 +31,11 @@ public class DBtables {
                     "id SERIAL unique," +
                     "pvm date," +
                     "hours float," +
-                    "project int," +
+                    "project_id int," +
                     "paid varchar," +
                     "description varchar," +
                     "primary key(id)," +
-                    "foreign key(project) references Projects(id)" +
+                    "foreign key(project_id) references Projects(id)" +
                     ");";
             statement.executeUpdate(sql);
             System.out.println("Table work_output created!");

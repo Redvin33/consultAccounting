@@ -2,9 +2,11 @@ package com.booking.consultAccounting;
 
 import com.booking.consultAccounting.db.DBInit;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@EnableAutoConfiguration
 public class ConsultAccountingApplication {
 
 	public static void main(String[] args) {

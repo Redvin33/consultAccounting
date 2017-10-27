@@ -1,0 +1,10 @@
+{
+  "id": 1,
+  "name": "project_name",
+  "customer": "customer1",
+  "hourly_rate": 75,
+  "charged": 1200,
+  "to_charge": 1500,
+  "phase": "urakointi",
+  "active": true
+}

@@ -172,7 +172,7 @@ public class ConsultAccountingApplicationTests {
 			con.setRequestProperty("Accept", "application/json");
 
 			JSONObject new_workOutput = new JSONObject(); //JSON object with right
-			new_workOutput.put("Date", "27/06/2017");
+			new_workOutput.put("Date", "");
 			new_workOutput.put("hours", 2.5);
 			new_workOutput.put("project_id", 1);
 			new_workOutput.put("phase", "urakointi");
