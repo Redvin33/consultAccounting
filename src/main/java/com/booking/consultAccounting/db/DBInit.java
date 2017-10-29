@@ -50,8 +50,6 @@ public class DBInit {
 
         } catch (ClassNotFoundException e) {
             System.out.println("No driver class found");
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

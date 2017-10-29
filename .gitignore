@@ -25,3 +25,4 @@ nbdist/
 /hibernate.cfg.xml
 /hibernate.properties
 /src/main/resources/hibernate.cfg.xml
+/src/main/resources/db.properties

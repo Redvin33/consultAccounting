@@ -1,11 +1,10 @@
 package com.booking.consultAccounting.dao;
 
+import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
+import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,50 +39,60 @@ public class BookingDaoImpl implements BookingDaoInterface {
 
     @Transactional
     @Override
-    public List<Project> getAllProjects() {
+    public List<Project> getAllProjects() throws ProjectNotFoundException {
         Session session = sessionFactory.openSession();
         Query qry = session.createQuery("from Project");
         List projects = qry.list();
         session.close();
+        if(qry.list().size() == 0) {
+            throw new ProjectNotFoundException("Couldn't find any projects from database");
+        }
         return projects;
 
     }
 
     @Override
-    public Project getProjectById(int id) {
+    public Project getProjectById(int id) throws ProjectNotFoundException {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
         Project p = session.get(Project.class, id);
+        session.close();
+        if(p == null) { //If p is null t
+            throw new ProjectNotFoundException("Cant find project with id "+ id);
+        }
+        return p;
+    }
+
+    @Override
+    public Project getProjectByName(String name) throws ProjectNotFoundException{
+        Session session = sessionFactory.openSession();
+        Query qry = session.createQuery("from Project where name='" + name + "'");
+        qry.setMaxResults(1);
+        if (qry.list().size() == 0) {
+            throw new ProjectNotFoundException("Cant find project with name " + name);
+        }
+        Project p = (Project) qry.list().get(0);
         session.close();
         return p;
     }
 
     @Override
-    public Project getProjectByName(String name) throws IndexOutOfBoundsException{
-        try {
-            Session session = sessionFactory.openSession();
-            Query qry = session.createQuery("from Project where name='" + name + "'");
-            qry.setMaxResults(1);
-            Project p = (Project) qry.list().get(0);
-            session.close();
-            return p;
-        } catch (IndexOutOfBoundsException e) {
-            throw e;
-        }
-    }
-
-    @Override
-    public void deleteProjectById(int id) {
+    public void deleteProjectById(int id) throws ProjectNotFoundException{
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Project p = session.get(Project.class, id);
+        //If p == null it means that no project with requested id exists in database.
+        if(p == null) {
+            session.close();
+            throw new ProjectNotFoundException("Cant find project with id " +id);
+        }
         session.delete(p);
         session.getTransaction().commit();
         session.close();
     }
 
     @Override
-    public void updateProject(Project p) {
+    public void updateProject(Project p) throws HibernateException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(p);
@@ -92,7 +101,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addProject(Project project) {
+    public void addProject(Project project) throws HibernateException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(project);
@@ -111,12 +120,15 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public List<WorkOutput> getAllWorkOutputs(int id) {
+    public List<WorkOutput> getAllWorkOutputs(int id) throws WorkOutputNotFoundException {
         Session session = sessionFactory.openSession();
         Query qry = session.createQuery("from WorkOutput where project_id="+id);
-        List projects = qry.list();
+        List workoutputs = qry.list();
         session.close();
-        return projects;
+        if (workoutputs.size() == 0) {
+            throw new WorkOutputNotFoundException("No workoutputs found with project_id "+id+".");
+        }
+        return workoutputs;
     }
 
     @Override
