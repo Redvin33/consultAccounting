@@ -7,7 +7,9 @@ import com.booking.consultAccounting.entity.WorkOutput;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,19 +38,17 @@ public class BookingDaoImpl implements BookingDaoInterface {
 
     }
 
-
     @Transactional
     @Override
     public List<Project> getAllProjects() throws ProjectNotFoundException {
         Session session = sessionFactory.openSession();
         Query qry = session.createQuery("from Project");
         List projects = qry.list();
-        session.close();
         if(qry.list().size() == 0) {
             throw new ProjectNotFoundException("Couldn't find any projects from database");
         }
+        session.close();
         return projects;
-
     }
 
     @Override
@@ -76,13 +76,26 @@ public class BookingDaoImpl implements BookingDaoInterface {
         return p;
     }
 
+    private void deleteProjectsWorkOutputs(int id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Query qry = session.createQuery("from WorkOutput where project_id="+id);
+        List<WorkOutput> related_works = qry.list();
+        String hql = "delete from WorkOutput where project_id= :id"; //We delete first projects workoutputs so we dont violate foreign key constraint
+        session.createQuery(hql).setLong("id", id).executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+        return;
+
+    }
+
     @Override
     public void deleteProjectById(int id) throws ProjectNotFoundException{
+        deleteProjectsWorkOutputs(id);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Project p = session.get(Project.class, id);
-        //If p == null it means that no project with requested id exists in database.
-        if(p == null) {
+        if(p == null) {     //If p == null it means that no project with requested id exists in database.
             session.close();
             throw new ProjectNotFoundException("Cant find project with id " +id);
         }
@@ -92,7 +105,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void updateProject(Project p) throws HibernateException {
+    public void updateProject(Project p) throws StaleStateException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(p);
@@ -101,7 +114,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addProject(Project project) throws HibernateException {
+    public void addProject(Project project) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(project);
@@ -110,7 +123,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void deleteWorkOutById(int id) {
+    public void deleteWorkOutById(int id) throws ObjectRetrievalFailureException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         WorkOutput w = session.load(WorkOutput.class, id);
@@ -132,7 +145,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addWorkOutput(WorkOutput work) {
+    public void addWorkOutput(WorkOutput work) throws PSQLException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(work);

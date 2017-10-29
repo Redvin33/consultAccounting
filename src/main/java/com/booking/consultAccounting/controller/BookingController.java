@@ -1,5 +1,6 @@
 package com.booking.consultAccounting.controller;
 
+import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
@@ -26,19 +27,19 @@ public class BookingController {
 
     //Returns all projects
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<Project> getAllProjects() throws Exception{
+    public Collection<Project> getAllProjects() throws Exception {
         return bookingService.getAllProjects();
     }
 
     //with GET request to http://domain/projects/{id} returns project that matches id.
     @RequestMapping(value= "/id/{id}", method = RequestMethod.GET)
-    public Project getProjectById(@PathVariable("id") int id) throws Exception {
+    public Project getProjectById(@PathVariable("id") int id) throws ProjectNotFoundException {
         return bookingService.getProjectById(id);
     }
 
     //with GET-request to http://domain/projects/name={name} returns project that matches name
     @RequestMapping(value= "/name/{name}", method = RequestMethod.GET)
-    public ResponseEntity<Project> getProjectByName(@PathVariable("name") String name) throws Exception{
+    public ResponseEntity<Project> getProjectByName(@PathVariable("name") String name) throws ProjectNotFoundException{
         Project p = bookingService.getProjectByName(name);
         return new ResponseEntity<>(p, HttpStatus.OK);
     }
@@ -68,7 +69,7 @@ public class BookingController {
 
     //with POST
     @RequestMapping(value="/{id}/workoutputs/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addWorkOutput(@RequestBody WorkOutput work, @PathVariable int id) {
+    public void addWorkOutput(@RequestBody WorkOutput work, @PathVariable int id) throws ProjectNotFoundException {
         work.setProject_id(id);
         bookingService.addWorkOutput(work);
     }

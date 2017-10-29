@@ -4,6 +4,7 @@ import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
+import org.postgresql.util.PSQLException;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface BookingDaoInterface {
 
     List<WorkOutput> getAllWorkOutputs(int id) throws WorkOutputNotFoundException;
 
-    void deleteWorkOutById(int id) throws WorkOutputNotFoundException;
+    void deleteWorkOutById(int id) ;
 
-    void addWorkOutput(WorkOutput work);
+    void addWorkOutput(WorkOutput work) throws PSQLException;
 }
