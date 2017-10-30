@@ -31,7 +31,7 @@ public class BookingController {
 
     //Returns all projects
     @RequestMapping(method = RequestMethod.GET)
-    public List<Project> getAllProjects() throws Exception {
+    public Collection<Project> getAllProjects() throws Exception {
         return bookingService.getAllProjects();
     }
 
@@ -50,7 +50,7 @@ public class BookingController {
 
     //with POST
     @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addProject(@ModelAttribute Project project) {
+    public void addProject(@RequestBody Project project) {
         bookingService.addProject(project);
     }
 
@@ -84,11 +84,5 @@ public class BookingController {
         bookingService.deleteWorkOutputById(id);
     }
 
-    public BookingService getBookingService() {
-        return bookingService;
-    }
 
-    public void setBookingService(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
 }

@@ -26,7 +26,7 @@ public interface BookingDaoInterface {
 
     List<WorkOutput> getAllWorkOutputs(int id) throws WorkOutputNotFoundException;
 
-    void deleteWorkOutById(int id) ;
+    void deleteWorkOutById(int id) throws WorkOutputNotFoundException;
 
     void addWorkOutput(WorkOutput work) throws PSQLException;
 }

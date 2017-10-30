@@ -42,7 +42,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
 
     }
 
-    @Transactional
+
     @Override
     public List<Project> getAllProjects() throws ProjectNotFoundException {
         Session session = sessionFactory.openSession();
@@ -127,10 +127,13 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void deleteWorkOutById(int id) throws ObjectRetrievalFailureException {
+    public void deleteWorkOutById(int id) throws WorkOutputNotFoundException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         WorkOutput w = session.load(WorkOutput.class, id);
+        if (w==null) {
+            throw new WorkOutputNotFoundException("Cant find workoutput with id "+ id);
+        }
         session.delete(w);
         session.getTransaction().commit();
         session.close();

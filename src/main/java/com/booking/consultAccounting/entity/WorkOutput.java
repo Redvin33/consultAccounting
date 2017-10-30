@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class WorkOutput implements Serializable{
     private int id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") //Without this GET-request returns date as milliseconds
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="GMT+3") //Without this GET-request returns date as milliseconds
     private Date pvm;
     private double hours;
     private int project_id;

@@ -62,11 +62,7 @@ public class BookingService {
     }
 
     public void deleteWorkOutputById(int id) throws WorkOutputNotFoundException {
-        try {
-            this.bookingDao.deleteWorkOutById(id);
-        } catch(ObjectRetrievalFailureException e) {
-            throw new WorkOutputNotFoundException("WorkOutput couldn't be found with id "+id);
-        }
+        this.bookingDao.deleteWorkOutById(id);
     }
 
     public void addWorkOutput(WorkOutput work) throws ProjectNotFoundException {
@@ -77,11 +73,5 @@ public class BookingService {
         }
     }
 
-    public BookingDaoInterface getBookingDao() {
-        return bookingDao;
-    }
 
-    public void setBookingDao(BookingDaoInterface bookingDao) {
-        this.bookingDao = bookingDao;
-    }
 }
