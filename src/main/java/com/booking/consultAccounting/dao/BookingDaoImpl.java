@@ -25,6 +25,10 @@ import java.util.*;
 public class BookingDaoImpl implements BookingDaoInterface {
     private SessionFactory sessionFactory;
 
+    public BookingDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public BookingDaoImpl() throws Exception {
         Properties props = new Properties();
         props.load(BookingDaoImpl.class.getClassLoader().getResourceAsStream("db.properties"));

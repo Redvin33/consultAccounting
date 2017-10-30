@@ -9,10 +9,4 @@ public class ProjectNotFoundException extends Exception {
     public ProjectNotFoundException(String msg) {
         super(msg);
     }
-
-    @Override
-    public String toString() {
-        return "ProjectNotFoundException: " + this.getMessage();
-    }
-
 }

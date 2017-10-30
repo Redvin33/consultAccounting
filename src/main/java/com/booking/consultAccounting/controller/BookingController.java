@@ -25,9 +25,13 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+
     //Returns all projects
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<Project> getAllProjects() throws Exception {
+    public List<Project> getAllProjects() throws Exception {
         return bookingService.getAllProjects();
     }
 
@@ -44,6 +48,12 @@ public class BookingController {
         return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
+    //with POST
+    @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addProject(@ModelAttribute Project project) {
+        bookingService.addProject(project);
+    }
+
     //with DELETE request to http://domain/projects/delete/{id} deletes project that matches id
     @RequestMapping(value="/delete/{id}", method = RequestMethod.DELETE)
     public void deleteProjectById(@PathVariable("id") int id) throws Exception {
@@ -55,13 +65,7 @@ public class BookingController {
     public void updateProject(@RequestBody Project project) throws Exception {
         bookingService.updateProject(project);
     }
-
-    //with POST
-    @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addProject(@RequestBody Project project) {
-        bookingService.addProject(project);
-    }
-
+    
     @RequestMapping(value ="/{id}/workoutputs", method =RequestMethod.GET)
     public List<WorkOutput> getAllWorkOutputs(@PathVariable("id") int id) throws WorkOutputNotFoundException{
         return bookingService.getAllWorkOutputs(id);
@@ -80,4 +84,11 @@ public class BookingController {
         bookingService.deleteWorkOutputById(id);
     }
 
+    public BookingService getBookingService() {
+        return bookingService;
+    }
+
+    public void setBookingService(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
 }

@@ -24,6 +24,9 @@ public class BookingService {
     @Qualifier("testData")
     private BookingDaoInterface bookingDao;
 
+    public BookingService(BookingDaoInterface bookingDao) {
+        this.bookingDao = bookingDao;
+    }
 
     public List<Project> getAllProjects() throws ProjectNotFoundException {
         return this.bookingDao.getAllProjects();
@@ -72,5 +75,13 @@ public class BookingService {
         } catch(PSQLException e) {
             throw new ProjectNotFoundException("Cant find project with id "+work.getId());
         }
+    }
+
+    public BookingDaoInterface getBookingDao() {
+        return bookingDao;
+    }
+
+    public void setBookingDao(BookingDaoInterface bookingDao) {
+        this.bookingDao = bookingDao;
     }
 }

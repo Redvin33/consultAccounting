@@ -20,7 +20,7 @@ public class WorkOutput implements Serializable{
 
     private static final long serialVersionUID = 13L;
 
-    public WorkOutput(Date pvm, float hours, int project, Phase paid, String description) {
+    public WorkOutput(Date pvm, double hours, int project, Phase paid, String description) {
         this.pvm = pvm;
         this.hours = hours;
         this.project_id = project;

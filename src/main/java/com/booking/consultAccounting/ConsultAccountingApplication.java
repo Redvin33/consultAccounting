@@ -11,8 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class ConsultAccountingApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Kaynnistys");
-		//DBInit.createDatabase(); //Creates PostgreSQL database if it doesn't exist
+		DBInit.createDatabase(); //Creates PostgreSQL database if it doesn't exist
 		SpringApplication.run(ConsultAccountingApplication.class, args);
 	}
 }

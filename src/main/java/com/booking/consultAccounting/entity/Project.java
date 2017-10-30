@@ -18,7 +18,7 @@ public class Project implements Serializable {
     private double hourly_rate;
     //@Column(name="charged")
     private double charged;
-    //@Column(name="to_charge")
+    //@Column(name="to_charge")acti
     private double to_charge;
     //@Column(name="phase")
     //@Enumerated(EnumType.STRING)
@@ -28,7 +28,7 @@ public class Project implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Project(String name, String customer, float hourly_rate, float charged, float to_charge, Phase phase, boolean active) {
+    public Project(String name, String customer, double hourly_rate, double charged, double to_charge, Phase phase, boolean active) {
         this.name = name;
         this.customer = customer;
         this.hourly_rate = hourly_rate;
