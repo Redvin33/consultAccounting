@@ -21,7 +21,7 @@ public enum Phase implements Serializable{
     //private static final long serialVersionUID = 12358903454875L;
     private final String text;
 
-    private Phase(String s) {
+    Phase(String s) {
         text = s;
     }
 

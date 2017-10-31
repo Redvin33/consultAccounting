@@ -9,61 +9,30 @@ import com.booking.consultAccounting.entity.Phase;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
 import com.booking.consultAccounting.service.BookingService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.xpath.internal.operations.Gt;
+import org.hibernate.StaleStateException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.postgresql.util.GT;
 import org.postgresql.util.PSQLException;
 import org.postgresql.util.ServerErrorMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.xml.ws.Response;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
-
 import static org.mockito.Mockito.*;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConsultAccountingApplicationTests {
@@ -72,8 +41,6 @@ public class ConsultAccountingApplicationTests {
 	public ExpectedException exceptions = ExpectedException.none();
 	@Mock
 	private BookingDaoImpl dao;
-	@Mock
-	private BookingService service;
 
 	private MockMvc mockMvc;
 
@@ -142,30 +109,10 @@ public class ConsultAccountingApplicationTests {
 		this.mockMvc.perform(get("/projects/name/project1")).andExpect(status().isNotFound());
 	}
 
-
-	/*
-	@Test
-	public void testExceptionIfNoDataFound() throws Exception{
+	@Test //Makes GET-request to domain/projects/id/1 and checks that it returns 200 .
+	public void getProjectById200() {
 		try {
-			List all = new LinkedList();
-			exception.expect(ProjectNotFoundException.class);
-			//return mocked result set on find
-			when(dao.getAllProjects()).thenReturn(all);
-			//call the main method you want to test
-			Response r = service.getAllProjects();
-			//verify the method was called
-			verify(dao).getAllProjects();
-
-		} catch (Exception e) {
-
-		}
-
-	}
-	*/
-	@Test //Makes GET-request to domain/projects/{some string} and checks that it returns 400.
-	public void getProjectById() {
-		try {
-			this.mockMvc.perform(get("/projects/id/string")).andExpect(status().isBadRequest());
+			this.mockMvc.perform(get("/projects/id/1")).andExpect(status().isOk());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -181,10 +128,31 @@ public class ConsultAccountingApplicationTests {
 			fail();
 		}
 	}
+
+	@Test //Makes GET-request to domain/projects/delete/1 and checks that it returns 200 .
+	public void deleteProjectById200() {
+		try {
+			this.mockMvc.perform(get("/projects/id/1")).andExpect(status().isOk());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+	}
+
+	@Test //Makes GET-request to domain/projects/{some string} and checks that it returns 400.
+	public void deleteProjectById400() {
+		try {
+			this.mockMvc.perform(get("/projects/id/string")).andExpect(status().isBadRequest());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+	}
 	@Test //Makes GET-request to domain/projects/{projectid that doesnt exist} and checks that it returns 404
-	public void getNonExistingProjectById404() throws Exception {
-		when(dao.getProjectById(15)).thenThrow(new ProjectNotFoundException(""));
-		this.mockMvc.perform(get("/projects/id/15")).andExpect(status().isNotFound());
+	public void deleteNonExistingProjectById404() throws Exception {
+		doThrow(new ProjectNotFoundException("")).when(dao).deleteProjectById(15);
+		this.mockMvc.perform(delete("/projects/delete/15")).andExpect(status().isNotFound());
+
 	}
 
 
@@ -208,20 +176,86 @@ public class ConsultAccountingApplicationTests {
 		}
 	}
 
+	@Test //Tries to create project by making POST request to domain/projects/add and adding correctly formulated JSON
+	public void createProjectBadRequest400() {
+		try {
+			JSONObject new_project = new JSONObject();
+			new_project.put("name", "uusi projekti");
+			new_project.put("customer", "asiakas");
+			new_project.put("hourly_rate", 78);
+			new_project.put("charged", 1200);
+			new_project.put("to_charge", 1500);
+			new_project.put("phase", "väärä");
+			new_project.put("active", true);
 
+			this.mockMvc.perform(post("/projects/add").content(new_project.toString()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+	}
 
+	@Test //Makes PUT-request to http://domain/projects/update
+	public void updateExistingProject200() throws Exception {
+		JSONObject new_project = new JSONObject();
+		new_project.put("id", 1);
+		new_project.put("name", "uusi projekti");
+		new_project.put("customer", "asiakas");
+		new_project.put("hourly_rate", 78);
+		new_project.put("charged", 1200);
+		new_project.put("to_charge", 1500);
+		new_project.put("phase", "urakointi");
+		new_project.put("active", true);
+		this.mockMvc.perform(put("/projects/update").content(new_project.toString())
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test //Makes PUT-request to http://domain/projects/update
+	public void updateExistingProject400() throws Exception {
+		JSONObject new_project = new JSONObject();
+		new_project.put("id", 1);
+		new_project.put("name", "uusi projekti");
+		new_project.put("customer", "asiakas");
+		new_project.put("hourly_rate", 78);
+		new_project.put("charged", 1200);
+		new_project.put("to_charge", "not double"); //Not double, should result to bad request.
+		new_project.put("phase", "urakointi");
+		new_project.put("active", true);
+		this.mockMvc.perform(put("/projects/update").content(new_project.toString())
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	}
+
+	@Test //Makes PUT-request to http://domain/projects/update
+	public void updateNonExistingProject404() {
+		try {
+			JSONObject new_project = new JSONObject();
+			new_project.put("id", 1);
+			new_project.put("name", "uusi projekti");
+			new_project.put("customer", "asiakas");
+			new_project.put("hourly_rate", 78);
+			new_project.put("charged", 1200);
+			new_project.put("to_charge", 1500);
+			new_project.put("phase", "urakointi");
+			new_project.put("active", true);
+			doThrow(new StaleStateException("")).when(dao).updateProject(any());
+			this.mockMvc.perform(put("/projects/update").content(new_project.toString())
+					.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+	}
 
 	//workoutputtests
-
 
 	@Test //Makes GET-request to domain/workoutputs and checks that it always returns http status code 200
 	public void allWorkOutputsTest() {
 		try {
 			List all = new LinkedList();
-			SimpleDateFormat sdf = new SimpleDateFormat(("dd-mm-yyyy"));
+			SimpleDateFormat sdf = new SimpleDateFormat(("yyyy-MM-dd"));
 
-			all.add(new WorkOutput(sdf.parse("30-10-2017"), 2.5, 3, Phase.urakointi, "did some stuff"));
-			all.add(new WorkOutput(sdf.parse("31-10-2017"), 2.5, 3, Phase.urakointi, "work"));
+			all.add(new WorkOutput(sdf.parse("2017-06-30"), 2.5, 3, Phase.urakointi, "did some stuff"));
+			all.add(new WorkOutput(sdf.parse("2017-06-31"), 2.5, 3, Phase.urakointi, "work"));
 			when(dao.getAllProjects()).thenReturn(all);
 			//Checks that http status code is 200 and all inputted values are correct
 			this.mockMvc.perform(get("/projects")).andExpect(status().isOk()).andExpect(
@@ -246,11 +280,14 @@ public class ConsultAccountingApplicationTests {
 		}
 	}
 
-
-
-	@Test //Makes GET-request to domain/workoutputs/9999999999999 and checks that it returns http status code 404
-	public void nonExistingProjectWorkOutputs() {
-
+	@Test
+	public void getWorkOutputsNoResults404() throws Exception {
+		try {
+			when(dao.getAllWorkOutputs(15)).thenThrow(new WorkOutputNotFoundException(""));
+			this.mockMvc.perform(get("/projects/15/workoutputs")).andExpect(status().isNotFound());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Test //Makes POST-request to domain/workoutputs with JSON-body that has all attributes that WorkOutput class constructor needs
@@ -261,7 +298,20 @@ public class ConsultAccountingApplicationTests {
 		new_workOutput.put("project_id", 1);
 		new_workOutput.put("phase", "urakointi");
 		new_workOutput.put("description", "suunnittelua");
-		this.mockMvc.perform(get("/projects/3/workoutputs/add")).andExpect(status().isOk());
+		this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString()).
+			contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+
+	@Test //Makes POST-request to domain/workoutputs with JSON-body that has all attributes that WorkOutput class constructor needs
+	public void addWorkOutputBadRequest() throws Exception {
+		JSONObject new_workOutput = new JSONObject(); //JSON object with right
+		new_workOutput.put("Date", "2009-05-06");
+		new_workOutput.put("hours", "not double at all");
+		new_workOutput.put("project_id", 3);
+		new_workOutput.put("phase", "tarjous");
+		new_workOutput.put("description", "suunnittelua");
+		this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString()).
+				contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
 	}
 
 	@Test //Tests that POST-request to /projects/workoutputs/{id}/add returns 404 if project cant be found with that id
@@ -276,6 +326,37 @@ public class ConsultAccountingApplicationTests {
 				.when(dao).addWorkOutput(any());
 		this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString())
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	@Test //Tests that DELETE-request to /projects/workoutputs/delete/{id} returns 200 when no exceptions
+	public void deleteWorkOutput() {
+		try {
+			this.mockMvc.perform(delete("/projects/workoutputs/delete/12")).andExpect(status().isOk());
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+	}
+
+	@Test //Tests that DELETE-request to /projects/workoutputs/delete/{id} with wrong non integer id returns 400
+	public void deleteWorkOutputBadRequest400() {
+		try {
+			this.mockMvc.perform(delete("/projects/workoutputs/delete/notint")).andExpect(status().isBadRequest());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+	}
+
+	@Test
+	public void deleteWorkOutputNotFound404() {
+		try {
+			this.mockMvc.perform(delete("/projects/workoutputs/delete/12")).andExpect(status().isNotFound());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
 	}
 
 }

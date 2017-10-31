@@ -29,7 +29,7 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    //Returns all projects
+    //GET-request to http://domain/projects returns all existing projects from database
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Project> getAllProjects() throws Exception {
         return bookingService.getAllProjects();
@@ -41,14 +41,14 @@ public class BookingController {
         return bookingService.getProjectById(id);
     }
 
-    //with GET-request to http://domain/projects/name={name} returns project that matches name
+    //with GET-request to http://domain/projects/nme/{name} returns project that matches name
     @RequestMapping(value= "/name/{name}", method = RequestMethod.GET)
     public ResponseEntity<Project> getProjectByName(@PathVariable("name") String name) throws ProjectNotFoundException{
         Project p = bookingService.getProjectByName(name);
         return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
-    //with POST
+    //with POST-request to http://domain/projects/add adds new project to database.
     @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addProject(@RequestBody Project project) {
         bookingService.addProject(project);
@@ -65,13 +65,14 @@ public class BookingController {
     public void updateProject(@RequestBody Project project) throws Exception {
         bookingService.updateProject(project);
     }
-    
+
+    //With GET-request to http://domain/projects/{id}/workoutputs returns all workoutputs for project with id {id}
     @RequestMapping(value ="/{id}/workoutputs", method =RequestMethod.GET)
     public List<WorkOutput> getAllWorkOutputs(@PathVariable("id") int id) throws WorkOutputNotFoundException{
         return bookingService.getAllWorkOutputs(id);
     }
 
-    //with POST
+    //with POST-request to http://domain/projects/{id}/workoutputs/add adds new workoutput with project_id id
     @RequestMapping(value="/{id}/workoutputs/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addWorkOutput(@RequestBody WorkOutput work, @PathVariable int id) throws ProjectNotFoundException {
         work.setProject_id(id);

@@ -48,6 +48,9 @@
         "responses": {
           "200": {
             "description": "Successfull operation"
+          },
+          "400": {
+            "description": "Bad request. Invalid type in some attribute"
           }
         }
       }
@@ -164,7 +167,10 @@
             "description": "successful operation"
           },
           "400": {
-            "description": ""
+            "description": "Id cant be translated to integer"
+          },
+          "404": {
+            "description": "Cant find project with provided id"
           }
         }
       }
