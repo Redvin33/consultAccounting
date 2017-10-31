@@ -15,7 +15,7 @@
             <generator class="native"/>
         </id>
 
-        <property name = "pvm" column = "pvm" type = "java.util.Date" />
+        <property name = "pvm" column = "pvm" type = "java.time.LocalDate" />
         <property name = "hours" column = "hours" type = "double"/>
         <property name = "project_id" column="project_id"  lazy="false" type = "int"/>
         <property name = "paid" column="paid" type="string"/>

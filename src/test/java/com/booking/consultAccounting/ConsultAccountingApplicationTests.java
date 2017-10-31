@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -252,28 +253,28 @@ public class ConsultAccountingApplicationTests {
 	public void allWorkOutputsTest() {
 		try {
 			List all = new LinkedList();
-			SimpleDateFormat sdf = new SimpleDateFormat(("yyyy-MM-dd"));
 
-			all.add(new WorkOutput(sdf.parse("2017-06-30"), 2.5, 3, Phase.urakointi, "did some stuff"));
-			all.add(new WorkOutput(sdf.parse("2017-06-31"), 2.5, 3, Phase.urakointi, "work"));
-			when(dao.getAllProjects()).thenReturn(all);
+			LocalDate lc = LocalDate.parse("2016-06-22");
+			LocalDate lc1 = LocalDate.parse("2016-06-10");
+
+			all.add(new WorkOutput(lc, 2.5, 3, Phase.urakointi, "did some stuff"));
+			all.add(new WorkOutput(lc1, 2.5, 3, Phase.urakointi, "work"));
+			when(dao.getAllWorkOutputs(1)).thenReturn(all);
 			//Checks that http status code is 200 and all inputted values are correct
-			this.mockMvc.perform(get("/projects")).andExpect(status().isOk()).andExpect(
+			this.mockMvc.perform(get("/projects/1/workoutputs")).andExpect(status().isOk()).andExpect(
 					content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-					.andExpect(jsonPath("$[0].pvm").value("2017-10-30"))
+					.andExpect(jsonPath("$[0].pvm").value("2016-06-22"))
 					.andExpect(jsonPath("$[0].hours").value(2.5))
 					.andExpect(jsonPath("$[0].project_id").value(3))
 					.andExpect(jsonPath("$[0].paid").value("urakointi"))
 					.andExpect(jsonPath("$[0].description").value("did some stuff"))
 
-					.andExpect(jsonPath("$[1].pvm").value("2017-10-31"))
+					.andExpect(jsonPath("$[1].pvm").value("2016-06-10"))
 					.andExpect(jsonPath("$[1].hours").value(2.5))
 					.andExpect(jsonPath("$[1].project_id").value(3))
 					.andExpect(jsonPath("$[1].paid").value("urakointi"))
 					.andExpect(jsonPath("$[1].description").value("work"));
 
-
-			verify(dao).getAllProjects();
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -349,9 +350,10 @@ public class ConsultAccountingApplicationTests {
 		}
 	}
 
-	@Test
+	@Test //Tests that DELETE-request to /projects/workoutputs/delete/{id} with non existing id returns 404
 	public void deleteWorkOutputNotFound404() {
 		try {
+			doThrow(new WorkOutputNotFoundException("")).when(dao).deleteWorkOutById(12);
 			this.mockMvc.perform(delete("/projects/workoutputs/delete/12")).andExpect(status().isNotFound());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

@@ -1,9 +1,15 @@
 package com.booking.consultAccounting.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -11,8 +17,9 @@ import java.util.Date;
  */
 public class WorkOutput implements Serializable{
     private int id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd", locale="fi_FI" ,timezone="Finland/Helsinki") //Without this GET-request returns date as milliseconds
-    private Date pvm;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate pvm;
     private double hours;
     private int project_id;
     private Phase paid;
@@ -20,7 +27,7 @@ public class WorkOutput implements Serializable{
 
     private static final long serialVersionUID = 13L;
 
-    public WorkOutput(Date pvm, double hours, int project, Phase paid, String description) {
+    public WorkOutput(LocalDate pvm, double hours, int project, Phase paid, String description) {
         this.pvm = pvm;
         this.hours = hours;
         this.project_id = project;
@@ -38,11 +45,12 @@ public class WorkOutput implements Serializable{
         this.id = id;
     }
 
-    public Date getPvm() {
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    public LocalDate getPvm() {
         return this.pvm;
     }
 
-    public void setPvm(Date pvm) {
+    public void setPvm(LocalDate pvm) {
         this.pvm = pvm;
     }
 
