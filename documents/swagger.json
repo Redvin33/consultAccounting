@@ -141,7 +141,7 @@
             "description": "Invalid ID supplied"
           },
           "404": {
-            "description": "ProjectNotFoundException"
+            "description": "Cant find project with provided id"
           }
         }
       }
@@ -203,12 +203,7 @@
           "404": {
             "description": "Cant find project"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
+        }
       }
     },
     "/projects/workoutputs": {
@@ -222,13 +217,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Order"
-              }
-            }
+            "description": "successful operation"
           },
           "404": {
             "description": "No workoutputs found"
@@ -295,29 +284,13 @@
             "description": "Successfully deleted"
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "Invalid Id or attribute value"
           },
           "404": {
             "description": "Cant find project with id {id}"
           }
         }
       }
-    }
-  },
-  "securityDefinitions": {
-    "petstore_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-      "flow": "implicit",
-      "scopes": {
-        "write:pets": "modify pets in your account",
-        "read:pets": "read your pets"
-      }
-    },
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
     }
   },
   "definitions": {
@@ -328,36 +301,6 @@
         "tarjous",
         "urakointi"
       ]
-    },
-    "Tag": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Tag"
-      }
-    },
-    "ApiResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "type": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
     },
     "Project": {
       "type": "object",
@@ -381,9 +324,7 @@
           "type": "number"
         },
         "phase": {
-          "type": {
-            "$ref": "Phase"
-          }
+          "$ref": "#/definitions/Phase"
         },
         "active": {
           "type": "boolean"
@@ -407,9 +348,7 @@
           "type": "integer"
         },
         "paid": {
-          "type": {
-            "$ref": "Phase"
-          }
+          "$ref": "#/definitions/Phase"
         },
         "description": {
           "type": "string"
