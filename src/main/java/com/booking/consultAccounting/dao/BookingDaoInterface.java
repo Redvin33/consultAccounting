@@ -4,7 +4,7 @@ import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
-import org.postgresql.util.PSQLException;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.List;
 
@@ -28,5 +28,5 @@ public interface BookingDaoInterface {
 
     void deleteWorkOutById(int id) throws WorkOutputNotFoundException;
 
-    void addWorkOutput(WorkOutput work) throws PSQLException;
+    void addWorkOutput(WorkOutput work) throws ConstraintViolationException;
 }

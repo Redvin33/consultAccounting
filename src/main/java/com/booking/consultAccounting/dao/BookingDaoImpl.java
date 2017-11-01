@@ -4,18 +4,17 @@ import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
-import org.hibernate.*;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.StaleStateException;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
-import org.postgresql.util.PSQLException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-
-import java.io.FileInputStream;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Lauri on 18.10.2017.
@@ -152,7 +151,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addWorkOutput(WorkOutput work) throws PSQLException {
+    public void addWorkOutput(WorkOutput work) throws ConstraintViolationException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(work);

@@ -20,10 +20,10 @@ public class AppExceptionHandler{
         @ExceptionHandler(value = {ProjectNotFoundException.class, WorkOutputNotFoundException.class})
         @ResponseStatus(HttpStatus.NOT_FOUND)
         public  ResponseEntity handleProjectNotFoundException(Exception e) {
-
             return new ResponseEntity<Object>(new ErrorResponse(404, e),HttpStatus.NOT_FOUND);
         }
 
+        //Exceptionhandler for all exceptions which should result to 400
         @ExceptionHandler(value = HttpMessageNotReadableException.class)
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         public ResponseEntity handleBadBody(HttpMessageNotReadableException e){

@@ -6,7 +6,7 @@ import com.booking.consultAccounting.dao.BookingDaoInterface;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
 import org.hibernate.StaleStateException;
-import org.postgresql.util.PSQLException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -67,8 +67,8 @@ public class BookingService {
     public void addWorkOutput(WorkOutput work) throws ProjectNotFoundException {
         try {
             this.bookingDao.addWorkOutput(work);
-        } catch(PSQLException e) {
-            throw new ProjectNotFoundException("Cant find project with id "+work.getId());
+        } catch(ConstraintViolationException e) {
+            throw new ProjectNotFoundException("Cant find project with id "+work.getProject_id());
         }
     }
 

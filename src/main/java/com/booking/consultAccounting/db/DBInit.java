@@ -2,9 +2,9 @@ package com.booking.consultAccounting.db;
 
 import org.postgresql.util.PSQLException;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -14,8 +14,7 @@ import java.util.Properties;
 //We are not using hmb2ddl.auto since its unsafe and seems to give errors. Instead we create database and its tables manually
 public class DBInit {
     public static void createDatabase() {
-        Connection connection = null;
-        Statement statement = null;
+
 
         try {
             Properties props = new Properties();
@@ -26,26 +25,24 @@ public class DBInit {
             String username = props.getProperty("username");
             String password = props.getProperty("password");
             Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(initurl, username, password);
-            statement = connection.createStatement();
+            Connection connection = DriverManager.getConnection(initurl, username, password);
+            Statement statement = connection.createStatement();
             String sql = "CREATE DATABASE consultaccounting;";
 
             //To delete database: sql = "DROP DATABASE DBNAME";
             statement.executeUpdate(sql);
 
             System.out.println("Database created!");
+            connection.close();
             DBtables.createTables(tableurl, username, password);
-        }catch (PSQLException e) {
-            e.printStackTrace();
-            System.out.println("Database already exists.");
-
-        } catch (SQLException sqlException) {
-            if (sqlException.getErrorCode() == 1007) {
+        }  catch (PSQLException sqlException) {
+            if (sqlException.getErrorCode() == 0 ) {
                 // Database already exists error
                 System.out.println(sqlException.getMessage());
             } else {
                 // Some other problems, e.g. Server down, no permission, etc
                 sqlException.printStackTrace();
+                System.out.println(sqlException.getErrorCode());
             }
 
         } catch (ClassNotFoundException e) {
