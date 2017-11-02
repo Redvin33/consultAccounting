@@ -14,8 +14,6 @@ import java.util.Properties;
 //We are not using hmb2ddl.auto since its unsafe and seems to give errors. Instead we create database and its tables manually
 public class DBInit {
     public static void createDatabase() {
-
-
         try {
             Properties props = new Properties();
             props.load(DBInit.class.getClassLoader().getResourceAsStream("db.properties"));

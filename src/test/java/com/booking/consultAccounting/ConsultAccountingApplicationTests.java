@@ -19,8 +19,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.postgresql.util.PSQLException;
-import org.postgresql.util.ServerErrorMessage;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -196,33 +194,42 @@ public class ConsultAccountingApplicationTests {
 	}
 
 	@Test //Makes PUT-request to http://domain/projects/update
-	public void updateExistingProject200() throws Exception {
-		JSONObject new_project = new JSONObject();
-		new_project.put("id", 1);
-		new_project.put("name", "uusi projekti");
-		new_project.put("customer", "asiakas");
-		new_project.put("hourly_rate", 78);
-		new_project.put("charged", 1200);
-		new_project.put("to_charge", 1500);
-		new_project.put("phase", "urakointi");
-		new_project.put("active", true);
-		this.mockMvc.perform(put("/projects/update").content(new_project.toString())
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	public void updateExistingProject200() {
+		try {
+			JSONObject new_project = new JSONObject();
+			new_project.put("id", 1);
+			new_project.put("name", "uusi projekti");
+			new_project.put("customer", "asiakas");
+			new_project.put("hourly_rate", 78);
+			new_project.put("charged", 1200);
+			new_project.put("to_charge", 1500);
+			new_project.put("phase", "urakointi");
+			new_project.put("active", true);
+			this.mockMvc.perform(put("/projects/update").content(new_project.toString())
+					.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
 	}
 
 	@Test //Makes PUT-request to http://domain/projects/update
-	public void updateExistingProject400() throws Exception {
-		JSONObject new_project = new JSONObject();
-		new_project.put("id", 1);
-		new_project.put("name", "uusi projekti");
-		new_project.put("customer", "asiakas");
-		new_project.put("hourly_rate", 78);
-		new_project.put("charged", 1200);
-		new_project.put("to_charge", "not double"); //Not double, should result to bad request.
-		new_project.put("phase", "urakointi");
-		new_project.put("active", true);
-		this.mockMvc.perform(put("/projects/update").content(new_project.toString())
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	public void updateExistingProject400() {
+		try {
+			JSONObject new_project = new JSONObject();
+			new_project.put("id", 1);
+			new_project.put("name", "uusi projekti");
+			new_project.put("customer", "asiakas");
+			new_project.put("hourly_rate", 78);
+			new_project.put("charged", 1200);
+			new_project.put("to_charge", "not double"); //Not double, should result to bad request.
+			new_project.put("phase", "urakointi");
+			new_project.put("active", true);
+			this.mockMvc.perform(put("/projects/update").content(new_project.toString())
+					.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Test //Makes PUT-request to http://domain/projects/update
@@ -290,42 +297,56 @@ public class ConsultAccountingApplicationTests {
 		}
 	}
 
-	@Test //Makes POST-request to domain/workoutputs with JSON-body that has all attributes that WorkOutput class constructor needs
-	public void addWorkOutput() throws Exception {
-		JSONObject new_workOutput = new JSONObject(); //JSON object with right
-		new_workOutput.put("Date", "2009-05-06");
-		new_workOutput.put("hours", 2.5);
-		new_workOutput.put("project_id", 1);
-		new_workOutput.put("phase", "urakointi");
-		new_workOutput.put("description", "suunnittelua");
-		this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString()).
-			contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	@Test //Makes POST-request to /workoutputs with JSON-body that has all attributes that WorkOutput class constructor needs
+	public void addWorkOutput() {
+		try {
+			JSONObject new_workOutput = new JSONObject(); //JSON object with right
+			new_workOutput.put("Date", "2009-05-06");
+			new_workOutput.put("hours", 2.5);
+			new_workOutput.put("project_id", 1);
+			new_workOutput.put("phase", "urakointi");
+			new_workOutput.put("description", "suunnittelua");
+			this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString()).
+					contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
 	}
 
-	@Test //Makes POST-request to domain/workoutputs with JSON-body that has all attributes that WorkOutput class constructor needs
-	public void addWorkOutputBadRequest() throws Exception {
-		JSONObject new_workOutput = new JSONObject(); //JSON object with right
-		new_workOutput.put("Date", "2009-05-06");
-		new_workOutput.put("hours", "not double at all");
-		new_workOutput.put("project_id", 3);
-		new_workOutput.put("phase", "tarjous");
-		new_workOutput.put("description", "suunnittelua");
-		this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString()).
-				contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	@Test //Makes POST-request to /workoutputs with JSON-body that has all attributes that WorkOutput class constructor needs
+	public void addWorkOutputBadRequest() {
+		try {
+			JSONObject new_workOutput = new JSONObject(); //JSON object with right
+			new_workOutput.put("Date", "2009-05-06");
+			new_workOutput.put("hours", "not double at all");
+			new_workOutput.put("project_id", 3);
+			new_workOutput.put("phase", "tarjous");
+			new_workOutput.put("description", "suunnittelua");
+			this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString()).
+					contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Test //Tests that POST-request to /projects/workoutputs/{id}/add returns 404 if project cant be found with that id
-	public void addWorkOutputToNonExistingProject404() throws Exception {
-		JSONObject new_workOutput = new JSONObject(); //JSON object with right
-		new_workOutput.put("Date", "2009-05-06");
-		new_workOutput.put("hours", 2.5);
-		new_workOutput.put("project_id", 1);
-		new_workOutput.put("phase", "urakointi");
-		new_workOutput.put("description", "suunnittelua");
-		doThrow(new PSQLException(new ServerErrorMessage("", 1)))
-				.when(dao).addWorkOutput(any());
-		this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString())
-				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+	public void addWorkOutputToNonExistingProject404()  {
+		try {
+			JSONObject new_workOutput = new JSONObject(); //JSON object with right
+			new_workOutput.put("Date", "2009-05-06");
+			new_workOutput.put("hours", 2.5);
+			new_workOutput.put("project_id", 1);
+			new_workOutput.put("phase", "urakointi");
+			new_workOutput.put("description", "suunnittelua");
+			doThrow(new Exception(""))
+					.when(dao).addWorkOutput(any());
+			this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString())
+					.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+			fail();
+		}
 	}
 
 	@Test //Tests that DELETE-request to /projects/workoutputs/delete/{id} returns 200 when no exceptions

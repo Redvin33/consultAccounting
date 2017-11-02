@@ -49,7 +49,11 @@ public class Project implements Serializable {
     }
 
     public String getName() {
-        return name;
+        if(this.name==null){
+            throw new NullPointerException("");
+        } else {
+            return this.name;
+        }
     }
 
     public void setName(String name) {
@@ -57,7 +61,11 @@ public class Project implements Serializable {
     }
 
     public String getCustomer() {
-        return customer;
+        if(customer==null){
+            throw new NullPointerException("Project needs customer attribute.");
+        } else {
+            return customer;
+        }
     }
 
     public void setCustomer(String customer) {
@@ -65,7 +73,11 @@ public class Project implements Serializable {
     }
 
     public double getHourly_rate() {
-        return hourly_rate;
+        if(hourly_rate==Double.NaN){
+            throw new NullPointerException("Project needs hourly_rate attribute.");
+        } else {
+            return hourly_rate;
+        }
     }
 
     public void setHourly_rate(double hourly_rate) {
@@ -73,7 +85,11 @@ public class Project implements Serializable {
     }
 
     public double getCharged() {
-        return charged;
+        if(charged==Double.NaN){
+            throw new NullPointerException("Project needs charged attribute.");
+        } else {
+            return charged;
+        }
     }
 
     public void setCharged(double charged) {
@@ -81,7 +97,11 @@ public class Project implements Serializable {
     }
 
     public double getTo_charge() {
-        return to_charge;
+        if(to_charge==Double.NaN){
+            throw new NullPointerException("Project needs hourly_rate attribute.");
+        } else {
+            return to_charge;
+        }
     }
 
     public void setTo_charge(double to_charge) {
@@ -89,7 +109,13 @@ public class Project implements Serializable {
     }
 
     public String getPhase() {
-        return phase.toString();
+        try {
+            return phase.toString();
+        } catch (Exception e) {
+            throw new NullPointerException("Project needs phase attribute");
+        }
+
+
     }
     //Using string since
     public void setPhase(String phase) throws Exception {

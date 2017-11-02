@@ -44,7 +44,11 @@ public class WorkOutput implements Serializable{
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate getPvm() {
-        return this.pvm;
+        if(pvm==null){
+            throw new NullPointerException("WorkOutput needs pvm attribute");
+        } else {
+            return pvm;
+        }
     }
 
     public void setPvm(LocalDate pvm) {
@@ -52,7 +56,11 @@ public class WorkOutput implements Serializable{
     }
 
     public double getHours() {
-        return hours;
+        if(hours==Double.NaN){
+            throw new NullPointerException("WorkOutput needs hours attribute");
+        } else {
+            return hours;
+        }
     }
 
     public void setHours(double hours) {
@@ -68,7 +76,11 @@ public class WorkOutput implements Serializable{
     }
 
     public String getPaid() {
-        return this.paid.toString();
+        try {
+            return paid.toString();
+        } catch (Exception e) {
+            throw new NullPointerException("WorkOutput needs paid attribute");
+        }
     }
 
     public void setPaid(String paid) {
@@ -76,7 +88,11 @@ public class WorkOutput implements Serializable{
     }
 
     public String getDescription() {
-        return description;
+        if(description==null){
+            throw new NullPointerException("WorkOutput needs hours attribute");
+        } else {
+            return description;
+        }
     }
 
     public void setDescription(String description) {

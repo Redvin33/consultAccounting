@@ -53,7 +53,12 @@ public class BookingService {
     }
 
     public void addProject(Project project) {
-        this.bookingDao.addProject(project);
+
+        try {
+            this.bookingDao.addProject(project);
+        } catch (NullPointerException e) {
+
+        }
     }
 
     public List<WorkOutput> getAllWorkOutputs(int id) throws WorkOutputNotFoundException {
