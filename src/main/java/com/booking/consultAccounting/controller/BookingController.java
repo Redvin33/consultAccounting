@@ -49,7 +49,7 @@ public class BookingController {
 
     //with POST-request to http://domain/projects/add adds new project to database.
     @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addProject(@RequestBody Project project) {
+    public void addProject(@RequestBody Project project) throws Exception {
         bookingService.addProject(project);
     }
 

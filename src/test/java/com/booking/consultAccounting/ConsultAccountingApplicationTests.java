@@ -58,10 +58,8 @@ public class ConsultAccountingApplicationTests {
 		try {
 			List all = new LinkedList();
 
-			all.add(new Project("project", "company AB", 100.0, 1345,
-					3456, Phase.aloittamaton, true));
-			all.add(new Project("project1", "company OY", 100.0, 1345,
-					3456, Phase.aloittamaton, false));
+			all.add(new Project("project", "company AB", 100.0,  Phase.aloittamaton, true));
+			all.add(new Project("project1", "company OY", 125.7,  Phase.aloittamaton, false));
 
 			when(dao.getAllProjects()).thenReturn(all);
 			//Checks that http status code is 200 and all inputted values are correct
@@ -70,16 +68,12 @@ public class ConsultAccountingApplicationTests {
 					.andExpect(jsonPath("$[0].name").value("project"))
 					.andExpect(jsonPath("$[0].customer").value("company AB"))
 					.andExpect(jsonPath("$[0].hourly_rate").value(100))
-					.andExpect(jsonPath("$[0].charged").value(1345))
-					.andExpect(jsonPath("$[0].to_charge").value(3456))
 					.andExpect(jsonPath("$[0].phase").value("aloittamaton"))
 					.andExpect(jsonPath("$[0].active").value(true))
 
 					.andExpect(jsonPath("$[1].name").value("project1"))
 					.andExpect(jsonPath("$[1].customer").value("company OY"))
 					.andExpect(jsonPath("$[1].hourly_rate").value(100))
-					.andExpect(jsonPath("$[1].charged").value(1345))
-					.andExpect(jsonPath("$[1].to_charge").value(3456))
 					.andExpect(jsonPath("$[1].phase").value("aloittamaton"))
 					.andExpect(jsonPath("$[1].active").value(false));
 

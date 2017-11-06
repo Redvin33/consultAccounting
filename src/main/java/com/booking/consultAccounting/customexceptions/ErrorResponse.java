@@ -19,7 +19,7 @@ public class ErrorResponse {
         StringWriter s = new StringWriter();
         PrintWriter p = new PrintWriter(s);
         e.printStackTrace(p);
-        this.stacktrace = s.toString(); // stack trace as a string
+        this.stacktrace = s.toString();
     }
 
     public int getStatuscode() {

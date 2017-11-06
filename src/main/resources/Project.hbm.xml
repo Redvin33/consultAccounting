@@ -18,8 +18,6 @@
         <property name = "name" column = "name" type = "string" unique="true"/>
         <property name = "customer" column = "customer" type = "string"/>
         <property name = "hourly_rate" column = "hourly_rate" type = "double"/>
-        <property name = "charged" column = "charged" type = "double"/>
-        <property name = "to_charge" column = "to_charge" type = "double"/>
         <property name = "phase" column="phase" type="string"/>
         <property name = "active" column = "active" type = "boolean"/>
 

@@ -11,6 +11,7 @@ import org.hibernate.StaleStateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -117,12 +118,13 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addProject(Project project) {
+    public void addProject(Project project) throws JpaSystemException{
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(project);
         session.getTransaction().commit();
         session.close();
+
     }
 
     @Override

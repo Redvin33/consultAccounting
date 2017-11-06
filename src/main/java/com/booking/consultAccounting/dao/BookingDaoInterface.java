@@ -1,5 +1,6 @@
 package com.booking.consultAccounting.dao;
 
+import com.booking.consultAccounting.customexceptions.InsufficientInputException;
 import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
@@ -22,7 +23,7 @@ public interface BookingDaoInterface {
 
     void updateProject(Project i) throws ProjectNotFoundException;
 
-    void addProject(Project project);
+    void addProject(Project project) throws InsufficientInputException;
 
     List<WorkOutput> getAllWorkOutputs(int id) throws WorkOutputNotFoundException;
 

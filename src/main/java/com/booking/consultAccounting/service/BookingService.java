@@ -1,5 +1,6 @@
 package com.booking.consultAccounting.service;
 
+import com.booking.consultAccounting.customexceptions.InsufficientInputException;
 import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.dao.BookingDaoInterface;
@@ -9,6 +10,7 @@ import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,11 +42,11 @@ public class BookingService {
 
     }
 
-    public void updateProject(Project project) throws ProjectNotFoundException {
+    public void updateProject(Project project) throws ProjectNotFoundException, InsufficientInputException {
         try {
             this.bookingDao.updateProject(project);
         } catch (StaleStateException e) {
-            throw new ProjectNotFoundException("Cant find project with name "+project.getName());
+            throw new ProjectNotFoundException("Cant find project with name " + project.getName());
         }
     }
 
@@ -52,12 +54,11 @@ public class BookingService {
         this.bookingDao.deleteProjectById(id);
     }
 
-    public void addProject(Project project) {
-
+    public void addProject(Project project) throws InsufficientInputException {
         try {
             this.bookingDao.addProject(project);
-        } catch (NullPointerException e) {
-
+        } catch (JpaSystemException e) {
+            throw new InsufficientInputException(e.getMessage());
         }
     }
 
