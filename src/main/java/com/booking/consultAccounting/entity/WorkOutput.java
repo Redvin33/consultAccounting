@@ -12,6 +12,7 @@ import java.time.LocalDate;
 /**
  * Created by Lauri on 18.10.2017.
  */
+//WorkOutput class getters throw exception if there's no proper value set.
 public class WorkOutput implements Serializable{
     private int id;
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -43,9 +44,9 @@ public class WorkOutput implements Serializable{
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    public LocalDate getPvm() {
+    public LocalDate getPvm() throws Exception {
         if(pvm==null){
-            throw new NullPointerException("WorkOutput needs pvm attribute");
+            throw new Exception("WorkOutput needs pvm attribute");
         } else {
             return pvm;
         }
@@ -55,9 +56,9 @@ public class WorkOutput implements Serializable{
         this.pvm = pvm;
     }
 
-    public double getHours() {
+    public double getHours() throws Exception {
         if(hours==Double.NaN){
-            throw new NullPointerException("WorkOutput needs hours attribute");
+            throw new Exception("WorkOutput needs hours attribute");
         } else {
             return hours;
         }
@@ -75,11 +76,11 @@ public class WorkOutput implements Serializable{
         this.project_id = project_id;
     }
 
-    public String getPaid() {
+    public String getPaid() throws Exception {
         try {
             return paid.toString();
         } catch (Exception e) {
-            throw new NullPointerException("WorkOutput needs paid attribute");
+            throw new Exception("WorkOutput needs paid attribute");
         }
     }
 
@@ -87,9 +88,9 @@ public class WorkOutput implements Serializable{
         this.paid = Phase.valueOf(paid);
     }
 
-    public String getDescription() {
+    public String getDescription() throws Exception {
         if(description==null){
-            throw new NullPointerException("WorkOutput needs hours attribute");
+            throw new Exception("WorkOutput needs hours attribute");
         } else {
             return description;
         }

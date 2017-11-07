@@ -1,16 +1,18 @@
 package com.booking.consultAccounting.service;
 
+import com.booking.consultAccounting.customexceptions.AlrearyExistsException;
 import com.booking.consultAccounting.customexceptions.InsufficientInputException;
 import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.dao.BookingDaoInterface;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
+import org.hibernate.PropertyAccessException;
 import org.hibernate.StaleStateException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,11 +44,14 @@ public class BookingService {
 
     }
 
-    public void updateProject(Project project) throws ProjectNotFoundException, InsufficientInputException {
+    public void updateProject(Project project)
+    throws ProjectNotFoundException, InsufficientInputException, AlrearyExistsException {
         try {
             this.bookingDao.updateProject(project);
         } catch (StaleStateException e) {
             throw new ProjectNotFoundException("Cant find project with name " + project.getName());
+        } catch (DataIntegrityViolationException e) {
+            throw new AlrearyExistsException("Project with that name already exist");
         }
     }
 
@@ -54,11 +59,13 @@ public class BookingService {
         this.bookingDao.deleteProjectById(id);
     }
 
-    public void addProject(Project project) throws InsufficientInputException {
+    public void addProject(Project project) throws InsufficientInputException, AlrearyExistsException {
         try {
             this.bookingDao.addProject(project);
-        } catch (JpaSystemException e) {
+        } catch (PropertyAccessException e) {
             throw new InsufficientInputException(e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            throw new AlrearyExistsException("Project with name "+project.getName()+" already exists");
         }
     }
 
@@ -70,11 +77,13 @@ public class BookingService {
         this.bookingDao.deleteWorkOutById(id);
     }
 
-    public void addWorkOutput(WorkOutput work) throws ProjectNotFoundException {
+    public void addWorkOutput(WorkOutput work) throws ProjectNotFoundException, InsufficientInputException {
         try {
             this.bookingDao.addWorkOutput(work);
         } catch(ConstraintViolationException e) {
             throw new ProjectNotFoundException("Cant find project with id "+work.getProject_id());
+        } catch(PropertyAccessException e) {
+            throw new InsufficientInputException("Workoutput didnt contain all required attributes");
         }
     }
 

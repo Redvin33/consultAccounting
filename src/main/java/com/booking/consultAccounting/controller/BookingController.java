@@ -1,5 +1,7 @@
 package com.booking.consultAccounting.controller;
 
+import com.booking.consultAccounting.customexceptions.AlrearyExistsException;
+import com.booking.consultAccounting.customexceptions.InsufficientInputException;
 import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
@@ -49,7 +52,7 @@ public class BookingController {
 
     //with POST-request to http://domain/projects/add adds new project to database.
     @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addProject(@RequestBody Project project) throws Exception {
+    public void addProject(@Valid @RequestBody Project project) throws Exception {
         bookingService.addProject(project);
     }
 
@@ -61,7 +64,7 @@ public class BookingController {
 
     //with PUT request with JSON content to http://domain/projects/id edits existing entry in entryData
     @RequestMapping(value="/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateProject(@RequestBody Project project) throws Exception {
+    public void updateProject( @Valid @RequestBody Project project) throws ProjectNotFoundException, InsufficientInputException, AlrearyExistsException {
         bookingService.updateProject(project);
     }
 
@@ -73,7 +76,7 @@ public class BookingController {
 
     //with POST-request to http://domain/projects/{id}/workoutputs/add adds new workoutput with project_id id
     @RequestMapping(value="/{id}/workoutputs/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addWorkOutput(@RequestBody WorkOutput work, @PathVariable int id) throws ProjectNotFoundException {
+    public void addWorkOutput( @Valid @RequestBody WorkOutput work, @PathVariable int id) throws ProjectNotFoundException, InsufficientInputException {
         work.setProject_id(id);
         bookingService.addWorkOutput(work);
     }

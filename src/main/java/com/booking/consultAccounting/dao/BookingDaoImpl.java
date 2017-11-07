@@ -4,14 +4,11 @@ import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.StaleStateException;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -109,7 +106,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void updateProject(Project p) throws StaleStateException {
+    public void updateProject(Project p) throws StaleStateException, DataIntegrityViolationException{
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.update(p);
@@ -118,7 +115,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addProject(Project project) throws JpaSystemException{
+    public void addProject(Project project) throws PropertyAccessException, DataIntegrityViolationException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(project);
@@ -153,7 +150,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addWorkOutput(WorkOutput work) throws ConstraintViolationException {
+    public void addWorkOutput(WorkOutput work) throws ConstraintViolationException, PropertyAccessException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(work);

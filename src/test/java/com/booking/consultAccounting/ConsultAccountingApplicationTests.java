@@ -10,6 +10,7 @@ import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
 import com.booking.consultAccounting.service.BookingService;
 import org.hibernate.StaleStateException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +75,7 @@ public class ConsultAccountingApplicationTests {
 
 					.andExpect(jsonPath("$[1].name").value("project1"))
 					.andExpect(jsonPath("$[1].customer").value("company OY"))
-					.andExpect(jsonPath("$[1].hourly_rate").value(100))
+					.andExpect(jsonPath("$[1].hourly_rate").value(125.7))
 					.andExpect(jsonPath("$[1].phase").value("aloittamaton"))
 					.andExpect(jsonPath("$[1].active").value(false));
 
@@ -214,9 +216,7 @@ public class ConsultAccountingApplicationTests {
 			new_project.put("id", 1);
 			new_project.put("name", "uusi projekti");
 			new_project.put("customer", "asiakas");
-			new_project.put("hourly_rate", 78);
-			new_project.put("charged", 1200);
-			new_project.put("to_charge", "not double"); //Not double, should result to bad request.
+			new_project.put("hourly_rate", "4gjgkj");
 			new_project.put("phase", "urakointi");
 			new_project.put("active", true);
 			this.mockMvc.perform(put("/projects/update").content(new_project.toString())
@@ -330,11 +330,10 @@ public class ConsultAccountingApplicationTests {
 			JSONObject new_workOutput = new JSONObject(); //JSON object with right
 			new_workOutput.put("Date", "2009-05-06");
 			new_workOutput.put("hours", 2.5);
-			new_workOutput.put("project_id", 1);
 			new_workOutput.put("phase", "urakointi");
 			new_workOutput.put("description", "suunnittelua");
-			doThrow(new Exception(""))
-					.when(dao).addWorkOutput(any());
+			doThrow(new ConstraintViolationException("",new SQLException(""), "project_id"))
+			.when(dao).addWorkOutput(any());
 			this.mockMvc.perform(post("/projects/3/workoutputs/add").content(new_workOutput.toString())
 					.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
 		} catch (Exception e){

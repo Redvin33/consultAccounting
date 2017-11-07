@@ -24,7 +24,8 @@ public class AppExceptionHandler{
         }
 
         //Exceptionhandler for all exceptions which should result to 400
-        @ExceptionHandler(value = {HttpMessageNotReadableException.class, InsufficientInputException.class})
+        @ExceptionHandler(value = {HttpMessageNotReadableException.class, InsufficientInputException.class,
+        AlrearyExistsException.class})
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         public ResponseEntity handleBadBody(Exception e){
             return new ResponseEntity<Object>(new ErrorResponse(400, e),HttpStatus.BAD_REQUEST);

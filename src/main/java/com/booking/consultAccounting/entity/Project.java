@@ -72,11 +72,13 @@ public class Project implements Serializable {
         if(hourly_rate==Double.NaN){
             throw new InsufficientInputException("Project needs hourly_rate attribute.");
         } else {
+            System.out.println(hourly_rate);
             return hourly_rate;
         }
     }
 
     public void setHourly_rate(double hourly_rate) {
+        System.out.println(hourly_rate+"setter");
         this.hourly_rate = hourly_rate;
     }
 
