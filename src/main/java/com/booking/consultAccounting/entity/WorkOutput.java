@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import org.hibernate.property.access.spi.PropertyAccessException;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -44,9 +45,9 @@ public class WorkOutput implements Serializable{
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    public LocalDate getPvm() throws Exception {
+    public LocalDate getPvm() throws PropertyAccessException {
         if(pvm==null){
-            throw new Exception("WorkOutput needs pvm attribute");
+            throw new PropertyAccessException("WorkOutput needs pvm attribute");
         } else {
             return pvm;
         }
@@ -56,9 +57,9 @@ public class WorkOutput implements Serializable{
         this.pvm = pvm;
     }
 
-    public double getHours() throws Exception {
-        if(hours==Double.NaN){
-            throw new Exception("WorkOutput needs hours attribute");
+    public double getHours() throws PropertyAccessException {
+        if(hours==0){
+            throw new PropertyAccessException("WorkOutput needs hours attribute");
         } else {
             return hours;
         }
@@ -76,11 +77,11 @@ public class WorkOutput implements Serializable{
         this.project_id = project_id;
     }
 
-    public String getPaid() throws Exception {
+    public String getPaid() throws PropertyAccessException {
         try {
             return paid.toString();
         } catch (Exception e) {
-            throw new Exception("WorkOutput needs paid attribute");
+            throw new PropertyAccessException("WorkOutput needs paid attribute");
         }
     }
 
@@ -88,9 +89,9 @@ public class WorkOutput implements Serializable{
         this.paid = Phase.valueOf(paid);
     }
 
-    public String getDescription() throws Exception {
+    public String getDescription() throws PropertyAccessException {
         if(description==null){
-            throw new Exception("WorkOutput needs hours attribute");
+            throw new PropertyAccessException("WorkOutput needs hours attribute");
         } else {
             return description;
         }

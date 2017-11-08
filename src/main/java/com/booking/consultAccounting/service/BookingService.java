@@ -45,7 +45,7 @@ public class BookingService {
     }
 
     public void updateProject(Project project)
-    throws ProjectNotFoundException, InsufficientInputException, AlrearyExistsException {
+    throws ProjectNotFoundException, AlrearyExistsException, InsufficientInputException {
         try {
             this.bookingDao.updateProject(project);
         } catch (StaleStateException e) {
@@ -59,13 +59,13 @@ public class BookingService {
         this.bookingDao.deleteProjectById(id);
     }
 
-    public void addProject(Project project) throws InsufficientInputException, AlrearyExistsException {
+    public void addProject(Project project) throws AlrearyExistsException, InsufficientInputException {
         try {
             this.bookingDao.addProject(project);
-        } catch (PropertyAccessException e) {
-            throw new InsufficientInputException(e.getMessage());
         } catch (DataIntegrityViolationException e) {
             throw new AlrearyExistsException("Project with name "+project.getName()+" already exists");
+        } catch (PropertyAccessException e) {
+            throw new InsufficientInputException("Caused by: " + e.getMessage());
         }
     }
 
@@ -82,8 +82,8 @@ public class BookingService {
             this.bookingDao.addWorkOutput(work);
         } catch(ConstraintViolationException e) {
             throw new ProjectNotFoundException("Cant find project with id "+work.getProject_id());
-        } catch(PropertyAccessException e) {
-            throw new InsufficientInputException("Workoutput didnt contain all required attributes");
+        } catch (PropertyAccessException e) {
+            throw new InsufficientInputException("Caused by: "+ e.getMessage());
         }
     }
 

@@ -115,7 +115,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     }
 
     @Override
-    public void addProject(Project project) throws PropertyAccessException, DataIntegrityViolationException {
+    public void addProject(Project project) throws DataIntegrityViolationException, PropertyAccessException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(project);
@@ -128,7 +128,7 @@ public class BookingDaoImpl implements BookingDaoInterface {
     public void deleteWorkOutById(int id) throws WorkOutputNotFoundException {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        WorkOutput w = session.load(WorkOutput.class, id);
+        WorkOutput w = session.get(WorkOutput.class, id);
         if (w==null) {
             throw new WorkOutputNotFoundException("Cant find workoutput with id "+ id);
         }

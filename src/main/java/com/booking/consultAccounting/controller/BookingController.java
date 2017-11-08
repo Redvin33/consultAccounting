@@ -52,8 +52,9 @@ public class BookingController {
 
     //with POST-request to http://domain/projects/add adds new project to database.
     @RequestMapping(value="/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addProject(@Valid @RequestBody Project project) throws Exception {
+    public void addProject(@Valid @RequestBody Project project) throws AlrearyExistsException, InsufficientInputException {
         bookingService.addProject(project);
+
     }
 
     //with DELETE request to http://domain/projects/delete/{id} deletes project that matches id
@@ -64,7 +65,8 @@ public class BookingController {
 
     //with PUT request with JSON content to http://domain/projects/id edits existing entry in entryData
     @RequestMapping(value="/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateProject( @Valid @RequestBody Project project) throws ProjectNotFoundException, InsufficientInputException, AlrearyExistsException {
+    public void updateProject(@Valid @RequestBody Project project)
+    throws ProjectNotFoundException, InsufficientInputException, AlrearyExistsException {
         bookingService.updateProject(project);
     }
 

@@ -1,11 +1,11 @@
 package com.booking.consultAccounting.dao;
 
-import com.booking.consultAccounting.customexceptions.InsufficientInputException;
 import com.booking.consultAccounting.customexceptions.ProjectNotFoundException;
 import com.booking.consultAccounting.customexceptions.WorkOutputNotFoundException;
 import com.booking.consultAccounting.entity.Project;
 import com.booking.consultAccounting.entity.WorkOutput;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public interface BookingDaoInterface {
 
     void updateProject(Project i) throws ProjectNotFoundException;
 
-    void addProject(Project project) throws InsufficientInputException;
+    void addProject(Project project) throws DataIntegrityViolationException;
 
     List<WorkOutput> getAllWorkOutputs(int id) throws WorkOutputNotFoundException;
 

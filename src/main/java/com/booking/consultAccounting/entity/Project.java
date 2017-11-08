@@ -1,7 +1,7 @@
 package com.booking.consultAccounting.entity;
 
 
-import com.booking.consultAccounting.customexceptions.InsufficientInputException;
+import org.hibernate.property.access.spi.PropertyAccessException;
 
 import java.io.Serializable;
 
@@ -44,9 +44,9 @@ public class Project implements Serializable {
         return id;
     }
 
-    public String getName() throws InsufficientInputException {
+    public String getName() throws PropertyAccessException {
         if(this.name==null){
-            throw new InsufficientInputException("Project needs name attribute");
+            throw new PropertyAccessException("Project needs name attribute");
         } else {
             return this.name;
         }
@@ -56,9 +56,9 @@ public class Project implements Serializable {
         this.name = name;
     }
 
-    public String getCustomer()  throws InsufficientInputException{
+    public String getCustomer()  throws PropertyAccessException{
         if(customer==null){
-            throw new InsufficientInputException("Project needs customer attribute.");
+            throw new PropertyAccessException("Project needs customer attribute.");
         } else {
             return customer;
         }
@@ -68,26 +68,25 @@ public class Project implements Serializable {
         this.customer = customer;
     }
 
-    public double getHourly_rate()  throws InsufficientInputException{
+    //Hourly rate's default value is 0.0 and it needs to be set
+    public double getHourly_rate()  throws PropertyAccessException{
         if(hourly_rate==Double.NaN){
-            throw new InsufficientInputException("Project needs hourly_rate attribute.");
+            throw new PropertyAccessException("Project needs hourly_rate attribute.");
         } else {
-            System.out.println(hourly_rate);
             return hourly_rate;
         }
     }
 
     public void setHourly_rate(double hourly_rate) {
-        System.out.println(hourly_rate+"setter");
         this.hourly_rate = hourly_rate;
     }
 
 
-    public String getPhase() throws InsufficientInputException{
+    public String getPhase() throws PropertyAccessException{
         try {
             return phase.toString();
         } catch (NullPointerException e) {
-            throw new InsufficientInputException("Project needs proper phase attribute");
+            throw new PropertyAccessException("Project needs proper phase attribute");
         }
     }
     //Using string since

@@ -157,9 +157,7 @@ public class ConsultAccountingApplicationTests {
 			JSONObject new_project = new JSONObject();
 			new_project.put("name", "uusi projekti");
 			new_project.put("customer", "asiakas");
-			new_project.put("hourly_rate", 78);
-			new_project.put("charged", 1200);
-			new_project.put("to_charge", 1500);
+			new_project.put("hourly_rate", 78.0);
 			new_project.put("phase", "urakointi");
 			new_project.put("active", true);
 
@@ -177,8 +175,6 @@ public class ConsultAccountingApplicationTests {
 			new_project.put("name", "uusi projekti");
 			new_project.put("customer", "asiakas");
 			new_project.put("hourly_rate", 78);
-			new_project.put("charged", 1200);
-			new_project.put("to_charge", 1500);
 			new_project.put("phase", "väärä");
 			new_project.put("active", true);
 
