@@ -1,5 +1,5 @@
 # consultAccounting
-Easy way to handle accounting for consult businesses
+Easy way to handle accounting for consult businesses. I was doing accounting software for one small company and decided to do REST api on top of it for practice. 
 
 # Instructions
 You need to have postgresql server installed in your computer. You can download it here https://www.pgadmin.org/download/pgadmin-4-windows/ .
